@@ -12,5 +12,7 @@ public class NotificationService {
         System.out.println("Received inventory event.");
         System.out.println("EVENT: [ " + message + " ]");
         System.out.println("--- NOTIFICATION 'SENT' SUCCESSFULLY ---");
+        System.out.println();
+        System.out.println();
     }
 }

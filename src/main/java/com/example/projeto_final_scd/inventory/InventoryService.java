@@ -47,6 +47,7 @@ public class InventoryService {
         }
 
         System.out.println("INVENTORY-SERVICE: Producing inventory event -> " + eventMessage);
+        System.out.println();
         kafkaTemplate.send(INVENTORY_EVENTS_TOPIC, order.getOrderId(), eventMessage);
     }
 

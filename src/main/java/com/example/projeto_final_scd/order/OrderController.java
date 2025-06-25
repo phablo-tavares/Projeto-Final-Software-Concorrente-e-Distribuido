@@ -11,16 +11,16 @@ import java.util.List;
 @RequestMapping("/orders")
 public class OrderController {
 
-    private final OrderProducerService producerService;
+    private final OrderService orderService;
 
-    public OrderController(OrderProducerService producerService) {
-        this.producerService = producerService;
+    public OrderController(OrderService orderService) {
+        this.orderService = orderService;
     }
 
     @PostMapping
     public String createOrder(@RequestBody List<String> items) {
         Order newOrder = new Order(items);
-        producerService.sendOrder(newOrder);
+        orderService.sendOrder(newOrder);
         return "Order received and sent for processing. Order ID: " + newOrder.getOrderId();
     }
 }

@@ -4,13 +4,13 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 @Service
-public class OrderProducerService {
+public class OrderService {
 
     private static final String TOPIC_NAME = "orders";
 
     private final KafkaTemplate<String, Order> kafkaTemplate;
 
-    public OrderProducerService(KafkaTemplate<String, Order> kafkaTemplate) {
+    public OrderService(KafkaTemplate<String, Order> kafkaTemplate) {
         this.kafkaTemplate = kafkaTemplate;
     }
 
