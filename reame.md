@@ -4,11 +4,11 @@ Este projeto é uma solução desenvolvida para a disciplina de Software Concorr
 
 ## 1. Explicação do Projeto
 
-[cite_start]O objetivo do sistema é simular um fluxo de processamento de pedidos de uma plataforma de e-commerce. [cite: 1] A arquitetura é baseada em eventos e composta por três serviços lógicos que se comunicam através de um broker Kafka:
+O objetivo do sistema é simular um fluxo de processamento de pedidos de uma plataforma de e-commerce. A arquitetura é baseada em eventos e composta por três serviços lógicos que se comunicam através de um broker Kafka:
 
-* **Order-Service**: Expõe uma API REST para receber novos pedidos. [cite_start]Ao receber um pedido, ele o publica no tópico `orders` do Kafka. [cite: 2, 5]
-* [cite_start]**Inventory-Service**: Consome os pedidos do tópico `orders`, simula uma verificação de estoque em memória e publica o resultado (sucesso ou falha) no tópico `inventory-events`. [cite: 3]
-* [cite_start]**Notification-Service**: Consome os eventos de resultado do tópico `inventory-events` e simula o envio de uma notificação para o cliente (registrando a ação no console). [cite: 4]
+* **Order-Service**: Expõe uma API REST para receber novos pedidos. Ao receber um pedido, ele o publica no tópico `orders` do Kafka. 
+* **Inventory-Service**: Consome os pedidos do tópico `orders`, simula uma verificação de estoque em memória e publica o resultado (sucesso ou falha) no tópico `inventory-events`.
+* **Notification-Service**: Consome os eventos de resultado do tópico `inventory-events` e simula o envio de uma notificação para o cliente (registrando a ação no console). 
 
 O fluxo de eventos completo é:
 
@@ -19,19 +19,19 @@ O fluxo de eventos completo é:
 Respostas objetivas para as questões propostas na definição do trabalho.
 
 ### Escalabilidade
-[cite_start]*A escalabilidade no Kafka é alcançada principalmente através do conceito de **partições**.* [cite: 1]
+*A escalabilidade no Kafka é alcançada principalmente através do conceito de **partições**.*
 
 Para escalar o sistema, poderíamos aumentar o número de partições dos tópicos (ex: `orders`). Em seguida, poderíamos iniciar múltiplas instâncias do serviço consumidor (ex: `Inventory-Service`), todas com o mesmo `group.id`. O Kafka automaticamente distribuiria as partições entre as instâncias disponíveis, permitindo que os pedidos fossem processados em paralelo, aumentando a vazão (throughput) do sistema.
 
 ### Tolerância à Falha
-[cite_start]*Tolerância à falha é a capacidade de um sistema continuar operando corretamente mesmo após a falha de um ou mais de seus componentes.* [cite: 8]
+*Tolerância à falha é a capacidade de um sistema continuar operando corretamente mesmo após a falha de um ou mais de seus componentes.* 
 
 O Kafka lida com isso através da **replicação de dados**. Ao criar um tópico, podemos definir um `replication-factor`. Se tivermos um cluster com 3 brokers (servidores) Kafka e um tópico com fator de replicação 3, cada partição desse tópico terá uma cópia em cada um dos 3 brokers.
 
-* [cite_start]**Situação de Falha:** Se um dos servidores do cluster Kafka falhar (ex: queda de energia, crash de hardware), o sistema não para. [cite: 8] As cópias das partições que estavam naquele servidor continuam disponíveis nos outros dois brokers. O Kafka automaticamente elege uma nova "partição líder" a partir das réplicas saudáveis, e os produtores e consumidores continuam a operar normalmente, sem perda de dados.
+* **Situação de Falha:** Se um dos servidores do cluster Kafka falhar (ex: queda de energia, crash de hardware), o sistema não para. As cópias das partições que estavam naquele servidor continuam disponíveis nos outros dois brokers. O Kafka automaticamente elege uma nova "partição líder" a partir das réplicas saudáveis, e os produtores e consumidores continuam a operar normalmente, sem perda de dados.
 
 ### Idempotência
-[cite_start]*Idempotência, no contexto de mensageria, é a garantia de que o processamento de uma mesma mensagem várias vezes produz o mesmo resultado que processá-la uma única vez, evitando duplicatas.* [cite: 9]
+*Idempotência, no contexto de mensageria, é a garantia de que o processamento de uma mesma mensagem várias vezes produz o mesmo resultado que processá-la uma única vez, evitando duplicatas.* 
 
 Isso é crucial em casos de falha de rede, onde um produtor pode reenviar uma mensagem sem ter certeza se a primeira tentativa foi recebida. Para garantir a idempotência no Kafka, basta configurar o produtor com a seguinte propriedade:
 
@@ -44,7 +44,7 @@ Com essa configuração, o Kafka associa um ID de produtor (PID) e um número de
 Siga os passos abaixo para executar a solução completa.
 
 #### Pré-requisitos
-* Java 11 ou superior
+* Java 21
 * Maven
 * Docker e Docker Compose
 
